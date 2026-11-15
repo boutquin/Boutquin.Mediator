@@ -1,0 +1,18 @@
+#nullable enable
+Boutquin.Abstractions.Auth.AuthorizeAttribute
+Boutquin.Abstractions.Auth.AuthorizeAttribute.AuthorizeAttribute() -> void
+Boutquin.Abstractions.Auth.AuthorizeAttribute.Policy.get -> string!
+Boutquin.Abstractions.Auth.AuthorizeAttribute.Policy.set -> void
+Boutquin.Abstractions.Auth.AuthorizeAttribute.RequiredRoles.get -> string!
+Boutquin.Abstractions.Auth.AuthorizeAttribute.RequiredRoles.set -> void
+Boutquin.Abstractions.Auth.CurrentUserService
+Boutquin.Abstractions.Auth.CurrentUserService.CurrentUserService(System.Func<System.Security.Claims.ClaimsPrincipal?>! principalAccessor) -> void
+Boutquin.Abstractions.Auth.CurrentUserService.UserId.get -> string?
+Boutquin.Abstractions.Auth.CurrentWindowsUserService
+Boutquin.Abstractions.Auth.CurrentWindowsUserService.CurrentWindowsUserService() -> void
+Boutquin.Abstractions.Auth.CurrentWindowsUserService.UserId.get -> string?
+Boutquin.Abstractions.Auth.IAuthorizationService
+Boutquin.Abstractions.Auth.IAuthorizationService.AuthorizeAsync(string! userId, System.Collections.Generic.IEnumerable<string!>! policies, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result<bool>!>
+Boutquin.Abstractions.Auth.IAuthorizationService.IsInAnyRoleAsync(string! userId, System.Collections.Generic.IEnumerable<string!>! roles, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result<bool>!>
+Boutquin.Abstractions.Auth.ICurrentUserService
+Boutquin.Abstractions.Auth.ICurrentUserService.UserId.get -> string?

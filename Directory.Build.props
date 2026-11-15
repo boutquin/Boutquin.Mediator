@@ -1,0 +1,75 @@
+<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
+    <LangVersion>14.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Pierre G. Boutquin</Authors>
+    <Company>Boutquin Computer Consulting</Company>
+    <PackageProjectUrl>https://github.com/boutquin/Boutquin.Mediator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/boutquin/Boutquin.Mediator</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <Copyright>Copyright © 2024-2026, Boutquin Computer Consulting. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageVersion>$(PackageVersion)$(MinVerBuildMetadata)</PackageVersion>
+    <Version>$(PackageVersion)</Version>
+    <MinVerDefaultPreReleaseIdentifiers>beta</MinVerDefaultPreReleaseIdentifiers>
+
+    <!-- Deterministic builds & SourceLink -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Shipping src/ enforces CS1591 (full public-API XML-doc coverage); test projects keep it
+       deferred — tests do not ship documentation. CS1573 is enforced everywhere. -->
+  <PropertyGroup Condition="$([System.String]::Copy('$(MSBuildProjectDirectory)').Contains('/tests/'))">
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- MinVer 7 deliberately emits 0.0.0.0 for every pre-1.0 build. Boutquin packages
+       instead bind within the current pre-1.0 minor line, where SemVer permits breaking
+       changes, and return to major-line binding at 1.0. This must run after MinVer writes
+       its values and before the SDK consumes AssemblyVersion. -->
+  <Target Name="ApplyBoutquinAssemblyVersionPolicy"
+          AfterTargets="MinVer"
+          BeforeTargets="GetAssemblyVersion"
+          Condition="'$(IsPackable)' == 'true'
+                     and '$(MinVerSkip)' != 'true'
+                     and '$(MinVerMajor)' != ''">
+    <PropertyGroup>
+      <AssemblyVersion Condition="'$(MinVerMajor)' == '0'">0.$(MinVerMinor).0.0</AssemblyVersion>
+      <AssemblyVersion Condition="'$(MinVerMajor)' != '0'">$(MinVerMajor).0.0.0</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
+
+  <!-- NuGet's PackTask accepts a VersionRange in ProjectVersion metadata. Convert the
+       versions collected from project references to exact ranges so the seven packages
+       always restore as one coherent family (e.g. Boutquin.Mediator.Caching 1.0.0 depends on
+       Boutquin.Mediator.Abstractions [1.0.0], never a looser >= 1.0.0). -->
+  <Target Name="PinBoutquinProjectReferencePackageVersions"
+          AfterTargets="_GetProjectReferenceVersions"
+          Condition="'$(IsPackable)' == 'true'
+                     and '@(_ProjectReferencesWithVersions)' != ''">
+    <ItemGroup>
+      <_ProjectReferencesWithVersions Update="@(_ProjectReferencesWithVersions)">
+        <ProjectVersion>[%(_ProjectReferencesWithVersions.ProjectVersion)]</ProjectVersion>
+      </_ProjectReferencesWithVersions>
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

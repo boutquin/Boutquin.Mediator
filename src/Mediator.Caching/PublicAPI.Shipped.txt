@@ -1,0 +1,19 @@
+#nullable enable
+Boutquin.Mediator.Caching.CachingBehavior<TRequest, TResponse>
+Boutquin.Mediator.Caching.CachingBehavior<TRequest, TResponse>.CachingBehavior(Microsoft.Extensions.Caching.Distributed.IDistributedCache! cache, Boutquin.Abstractions.Auth.ICurrentUserService! currentUserService, Microsoft.Extensions.Configuration.IConfiguration! configuration, Microsoft.Extensions.Logging.ILogger<TRequest>! logger) -> void
+Boutquin.Mediator.Caching.CachingBehavior<TRequest, TResponse>.HandleAsync(TRequest request, System.Func<System.Threading.Tasks.ValueTask<TResponse!>>! next, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+Boutquin.Mediator.Caching.CachingPolicyAttribute
+Boutquin.Mediator.Caching.CachingPolicyAttribute.CachingPolicyAttribute() -> void
+Boutquin.Mediator.Caching.CachingPolicySettings
+Boutquin.Mediator.Caching.CachingPolicySettings.AbsoluteExpirationRelativeToNow.get -> System.TimeSpan?
+Boutquin.Mediator.Caching.CachingPolicySettings.AbsoluteExpirationRelativeToNow.set -> void
+Boutquin.Mediator.Caching.CachingPolicySettings.CachingPolicySettings() -> void
+Boutquin.Mediator.Caching.CachingPolicySettings.Disabled.get -> bool
+Boutquin.Mediator.Caching.CachingPolicySettings.Disabled.set -> void
+Boutquin.Mediator.Caching.CachingPolicySettings.PerUser.get -> bool
+Boutquin.Mediator.Caching.CachingPolicySettings.PerUser.set -> void
+Boutquin.Mediator.Caching.CachingPolicySettings.Reset.get -> bool
+Boutquin.Mediator.Caching.CachingPolicySettings.Reset.set -> void
+Boutquin.Mediator.Caching.CachingPolicySettings.SlidingExpiration.get -> System.TimeSpan?
+Boutquin.Mediator.Caching.CachingPolicySettings.SlidingExpiration.set -> void
+static Boutquin.Mediator.Caching.CachingPolicySettings.Default.get -> Boutquin.Mediator.Caching.CachingPolicySettings!

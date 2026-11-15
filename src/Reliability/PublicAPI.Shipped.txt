@@ -1,0 +1,35 @@
+#nullable enable
+Boutquin.Reliability.IWaitSettings
+Boutquin.Reliability.IWaitSettings.ContinueAfterTimeout.get -> bool
+Boutquin.Reliability.IWaitSettings.NumberOfRetries.get -> int
+Boutquin.Reliability.IWaitSettings.SleepTimeDurationProvider.get -> System.Func<int, System.TimeSpan>!
+Boutquin.Reliability.IWaitSettings.TimeoutPerAttempt.get -> System.TimeSpan
+Boutquin.Reliability.IWaitWithRetry
+Boutquin.Reliability.IWaitWithRetry.WaitWithRetryAsync(System.Func<System.Threading.Tasks.Task!>! action, Boutquin.Reliability.IWaitSettings! waitSettings) -> System.Threading.Tasks.Task!
+Boutquin.Reliability.IWaitWithRetry.WaitWithRetryAsync(System.Func<System.Threading.Tasks.Task!>! action, Boutquin.Reliability.IWaitSettings! waitSettings, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Boutquin.Reliability.IWaitWithRetry.WaitWithRetryAsync<T>(System.Func<System.Threading.Tasks.Task<T>!>! action, Boutquin.Reliability.IWaitSettings! waitSettings) -> System.Threading.Tasks.Task<T>!
+Boutquin.Reliability.IWaitWithRetry.WaitWithRetryAsync<T>(System.Func<System.Threading.Tasks.Task<T>!>! action, Boutquin.Reliability.IWaitSettings! waitSettings, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<T>!
+Boutquin.Reliability.WaitSettings
+Boutquin.Reliability.WaitSettings.<Clone>$() -> Boutquin.Reliability.WaitSettings!
+Boutquin.Reliability.WaitSettings.ContinueAfterTimeout.get -> bool
+Boutquin.Reliability.WaitSettings.ContinueAfterTimeout.init -> void
+Boutquin.Reliability.WaitSettings.Deconstruct(out bool ContinueAfterTimeout, out System.Func<int, System.TimeSpan>! SleepTimeDurationProvider, out int NumberOfRetries, out System.TimeSpan TimeoutPerAttempt) -> void
+Boutquin.Reliability.WaitSettings.Equals(Boutquin.Reliability.WaitSettings? other) -> bool
+Boutquin.Reliability.WaitSettings.NumberOfRetries.get -> int
+Boutquin.Reliability.WaitSettings.NumberOfRetries.init -> void
+Boutquin.Reliability.WaitSettings.SleepTimeDurationProvider.get -> System.Func<int, System.TimeSpan>!
+Boutquin.Reliability.WaitSettings.SleepTimeDurationProvider.init -> void
+Boutquin.Reliability.WaitSettings.TimeoutPerAttempt.get -> System.TimeSpan
+Boutquin.Reliability.WaitSettings.TimeoutPerAttempt.init -> void
+Boutquin.Reliability.WaitSettings.WaitSettings(bool ContinueAfterTimeout, System.Func<int, System.TimeSpan>! SleepTimeDurationProvider, int NumberOfRetries, System.TimeSpan TimeoutPerAttempt) -> void
+Boutquin.Reliability.WaitWithRetry
+Boutquin.Reliability.WaitWithRetry.WaitWithRetry(Microsoft.Extensions.Logging.ILogger<Boutquin.Reliability.WaitWithRetry!>! logger) -> void
+Boutquin.Reliability.WaitWithRetry.WaitWithRetryAsync(System.Func<System.Threading.Tasks.Task!>! action, Boutquin.Reliability.IWaitSettings! waitSettings) -> System.Threading.Tasks.Task!
+Boutquin.Reliability.WaitWithRetry.WaitWithRetryAsync(System.Func<System.Threading.Tasks.Task!>! action, Boutquin.Reliability.IWaitSettings! waitSettings, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Boutquin.Reliability.WaitWithRetry.WaitWithRetryAsync<T>(System.Func<System.Threading.Tasks.Task<T>!>! action, Boutquin.Reliability.IWaitSettings! waitSettings) -> System.Threading.Tasks.Task<T>!
+Boutquin.Reliability.WaitWithRetry.WaitWithRetryAsync<T>(System.Func<System.Threading.Tasks.Task<T>!>! action, Boutquin.Reliability.IWaitSettings! waitSettings, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<T>!
+override Boutquin.Reliability.WaitSettings.Equals(object? obj) -> bool
+override Boutquin.Reliability.WaitSettings.GetHashCode() -> int
+override Boutquin.Reliability.WaitSettings.ToString() -> string!
+static Boutquin.Reliability.WaitSettings.operator !=(Boutquin.Reliability.WaitSettings? left, Boutquin.Reliability.WaitSettings? right) -> bool
+static Boutquin.Reliability.WaitSettings.operator ==(Boutquin.Reliability.WaitSettings? left, Boutquin.Reliability.WaitSettings? right) -> bool

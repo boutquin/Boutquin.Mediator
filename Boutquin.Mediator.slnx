@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="ARCHITECTURE.md" />
+    <File Path="CHANGELOG.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+    <File Path="SECURITY.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Abstractions/Boutquin.Abstractions.csproj" />
+    <Project Path="src/Mediator.Abstractions/Boutquin.Mediator.Abstractions.csproj" />
+    <Project Path="src/Mediator.Authorization/Boutquin.Mediator.Authorization.csproj" />
+    <Project Path="src/Mediator.Caching/Boutquin.Mediator.Caching.csproj" />
+    <Project Path="src/Mediator.Reliability/Boutquin.Mediator.Reliability.csproj" />
+    <Project Path="src/Mediator/Boutquin.Mediator.csproj" />
+    <Project Path="src/Reliability/Boutquin.Reliability.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Mediator.Tests.Common/Boutquin.Mediator.Tests.Common.csproj" />
+    <Project Path="tests/Mediator.Tests.IntegrationTests/Boutquin.Mediator.Tests.IntegrationTests.csproj" />
+    <Project Path="tests/Tests.UnitTests/Boutquin.Tests.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Boutquin.PackageVerification/Boutquin.PackageVerification.csproj" />
+  </Folder>
+</Solution>

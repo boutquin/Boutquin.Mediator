@@ -1,0 +1,4 @@
+#nullable enable
+Boutquin.Mediator.Authorization.AuthorizationBehavior<TRequest, TResponse>
+Boutquin.Mediator.Authorization.AuthorizationBehavior<TRequest, TResponse>.AuthorizationBehavior(Boutquin.Abstractions.Auth.ICurrentUserService! currentUserService, Boutquin.Abstractions.Auth.IAuthorizationService! authorizationService, Microsoft.Extensions.Logging.ILogger<TRequest>! logger) -> void
+Boutquin.Mediator.Authorization.AuthorizationBehavior<TRequest, TResponse>.HandleAsync(TRequest request, System.Func<System.Threading.Tasks.ValueTask<TResponse!>>! next, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>

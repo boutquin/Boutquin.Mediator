@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Boutquin.Mediator.Abstractions</Title>
+    <Description>Contracts for the Boutquin mediator — commands, queries, notifications, stream requests, handlers, pipeline behaviors, and pre/post-processors, all returning Result-based outcomes.</Description>
+    <PackageTags>mediator;cqrs;pipeline;abstractions;dotnet;csharp;clean-architecture</PackageTags>
+    <PackageReleaseNotes>Release notes: https://github.com/boutquin/Boutquin.Mediator/blob/main/CHANGELOG.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Boutquin.Domain" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

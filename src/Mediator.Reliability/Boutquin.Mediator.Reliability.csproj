@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Boutquin.Mediator.Reliability</Title>
+    <Description>Retry pipeline behavior for Boutquin.Mediator — retries failed requests with per-attempt timeouts and configurable back-off via Boutquin.Reliability and Polly.</Description>
+    <PackageTags>mediator;reliability;resilience;polly;retry;timeout;dotnet;csharp</PackageTags>
+    <PackageReleaseNotes>Release notes: https://github.com/boutquin/Boutquin.Mediator/blob/main/CHANGELOG.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Abstractions\Boutquin.Mediator.Abstractions.csproj" />
+    <ProjectReference Include="..\Reliability\Boutquin.Reliability.csproj" />
+  </ItemGroup>
+
+</Project>

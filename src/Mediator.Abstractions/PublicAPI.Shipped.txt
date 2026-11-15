@@ -1,0 +1,41 @@
+#nullable enable
+Boutquin.Mediator.Abstractions.Extensions.ResultExtensions
+Boutquin.Mediator.Abstractions.Extensions.SenderExtensions
+Boutquin.Mediator.Abstractions.ICommand
+Boutquin.Mediator.Abstractions.ICommand<TCommandResult>
+Boutquin.Mediator.Abstractions.ICommandHandler<TCommand, TCommandResult>
+Boutquin.Mediator.Abstractions.ICommandHandler<TCommand>
+Boutquin.Mediator.Abstractions.IMediator
+Boutquin.Mediator.Abstractions.INotificationHandler<TNotification>
+Boutquin.Mediator.Abstractions.INotificationHandler<TNotification>.HandleAsync(TNotification notification, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result!>
+Boutquin.Mediator.Abstractions.IPipelineBehavior<TRequest, TResponse>
+Boutquin.Mediator.Abstractions.IPipelineBehavior<TRequest, TResponse>.HandleAsync(TRequest request, System.Func<System.Threading.Tasks.ValueTask<TResponse!>>! next, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+Boutquin.Mediator.Abstractions.IPublisher
+Boutquin.Mediator.Abstractions.IPublisher.PublishAsync<TNotification>(TNotification notification, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result!>
+Boutquin.Mediator.Abstractions.IQuery<TIQueryResult>
+Boutquin.Mediator.Abstractions.IQueryHandler<TQuery, TQueryResult>
+Boutquin.Mediator.Abstractions.IRequest<TRequestResult>
+Boutquin.Mediator.Abstractions.IRequestHandler
+Boutquin.Mediator.Abstractions.IRequestHandler<TRequest, TResponse>
+Boutquin.Mediator.Abstractions.IRequestHandler<TRequest, TResponse>.HandleAsync(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+Boutquin.Mediator.Abstractions.IRequestPostProcessor<TRequest, TResponse>
+Boutquin.Mediator.Abstractions.IRequestPostProcessor<TRequest, TResponse>.ProcessAsync(TRequest request, TResponse! response, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result!>
+Boutquin.Mediator.Abstractions.IRequestPreProcessor<TRequest>
+Boutquin.Mediator.Abstractions.IRequestPreProcessor<TRequest>.ProcessAsync(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result!>
+Boutquin.Mediator.Abstractions.ISender
+Boutquin.Mediator.Abstractions.ISender.SendAsync<TRequest, TResponse>(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+Boutquin.Mediator.Abstractions.IStreamPipelineBehavior<TRequest, TResponse>
+Boutquin.Mediator.Abstractions.IStreamPipelineBehavior<TRequest, TResponse>.HandleAsync(TRequest request, Boutquin.Mediator.Abstractions.StreamHandlerDelegate<TResponse>! next, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<Boutquin.Domain.Abstractions.Result<TResponse>!>!
+Boutquin.Mediator.Abstractions.IStreamRequest<TResponse>
+Boutquin.Mediator.Abstractions.IStreamRequestHandler<TRequest, TResponse>
+Boutquin.Mediator.Abstractions.IStreamRequestHandler<TRequest, TResponse>.HandleAsync(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<Boutquin.Domain.Abstractions.Result<TResponse>!>!
+Boutquin.Mediator.Abstractions.IStreamer
+Boutquin.Mediator.Abstractions.IStreamer.CreateStream<TRequest, TResponse>(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<Boutquin.Domain.Abstractions.Result<TResponse>!>!
+Boutquin.Mediator.Abstractions.RequestExtensions
+Boutquin.Mediator.Abstractions.StreamHandlerDelegate<TResponse>
+static Boutquin.Mediator.Abstractions.Extensions.ResultExtensions.WithCancellation<TResponse>(this System.Func<System.Threading.Tasks.ValueTask<TResponse!>>! next, System.Threading.CancellationToken cancellationToken, string! requestName, Microsoft.Extensions.Logging.ILogger! logger, string! code = "Error.Cancellation", string! name = "The request was cancelled.") -> System.Threading.Tasks.ValueTask<TResponse!>
+static Boutquin.Mediator.Abstractions.Extensions.SenderExtensions.SendAsync<TConcreteRequest>(this Boutquin.Mediator.Abstractions.ISender! sender, TConcreteRequest! request, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<dynamic!>
+static Boutquin.Mediator.Abstractions.Extensions.SenderExtensions.SendAsync<TResponse>(this Boutquin.Mediator.Abstractions.ISender! sender, Boutquin.Mediator.Abstractions.IRequest<TResponse!>! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+static Boutquin.Mediator.Abstractions.RequestExtensions.FullName<TRequest, TResponse>(this TRequest request) -> string!
+static Boutquin.Mediator.Abstractions.RequestExtensions.GetCacheKey<TRequest, TResponse>(this TRequest request, string? prefix = null) -> string!
+virtual Boutquin.Mediator.Abstractions.StreamHandlerDelegate<TResponse>.Invoke() -> System.Collections.Generic.IAsyncEnumerable<Boutquin.Domain.Abstractions.Result<TResponse>!>!

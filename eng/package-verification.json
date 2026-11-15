@@ -1,0 +1,65 @@
+{
+  "repositoryRoot": "..",
+  "repositoryUrl": "https://github.com/boutquin/Boutquin.Mediator",
+  "repositoryType": "git",
+  "targetFramework": "net10.0",
+  "packages": [
+    {
+      "id": "Boutquin.Abstractions",
+      "assembly": "Boutquin.Abstractions.dll",
+      "readmeSource": "src/Abstractions/README.md",
+      "internalDependencies": []
+    },
+    {
+      "id": "Boutquin.Reliability",
+      "assembly": "Boutquin.Reliability.dll",
+      "readmeSource": "src/Reliability/README.md",
+      "internalDependencies": []
+    },
+    {
+      "id": "Boutquin.Mediator.Abstractions",
+      "assembly": "Boutquin.Mediator.Abstractions.dll",
+      "readmeSource": "src/Mediator.Abstractions/README.md",
+      "internalDependencies": []
+    },
+    {
+      "id": "Boutquin.Mediator",
+      "assembly": "Boutquin.Mediator.dll",
+      "readmeSource": "src/Mediator/README.md",
+      "internalDependencies": [
+        "Boutquin.Mediator.Abstractions"
+      ]
+    },
+    {
+      "id": "Boutquin.Mediator.Authorization",
+      "assembly": "Boutquin.Mediator.Authorization.dll",
+      "readmeSource": "src/Mediator.Authorization/README.md",
+      "internalDependencies": [
+        "Boutquin.Abstractions",
+        "Boutquin.Mediator.Abstractions"
+      ]
+    },
+    {
+      "id": "Boutquin.Mediator.Caching",
+      "assembly": "Boutquin.Mediator.Caching.dll",
+      "readmeSource": "src/Mediator.Caching/README.md",
+      "internalDependencies": [
+        "Boutquin.Abstractions",
+        "Boutquin.Mediator.Abstractions"
+      ]
+    },
+    {
+      "id": "Boutquin.Mediator.Reliability",
+      "assembly": "Boutquin.Mediator.Reliability.dll",
+      "readmeSource": "src/Mediator.Reliability/README.md",
+      "internalDependencies": [
+        "Boutquin.Mediator.Abstractions",
+        "Boutquin.Reliability"
+      ]
+    }
+  ],
+  "targetFrameworks": [
+    "net10.0",
+    "net11.0"
+  ]
+}

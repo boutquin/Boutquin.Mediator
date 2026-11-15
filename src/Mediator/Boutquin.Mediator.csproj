@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Boutquin.Mediator</Title>
+    <Description>Mediator implementation for .NET — request dispatch, notification fan-out, streaming, pipeline behaviors, and handler auto-discovery via Scrutor.</Description>
+    <PackageTags>mediator;cqrs;pipeline;dependency-injection;dotnet;csharp;clean-architecture</PackageTags>
+    <PackageReleaseNotes>Release notes: https://github.com/boutquin/Boutquin.Mediator/blob/main/CHANGELOG.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Scrutor" />
+    <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Abstractions\Boutquin.Mediator.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

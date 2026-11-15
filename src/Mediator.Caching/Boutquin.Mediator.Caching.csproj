@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Boutquin.Mediator.Caching</Title>
+    <Description>Distributed-cache pipeline behavior for Boutquin.Mediator — caches successful Result responses per user, with policy from [CachingPolicy] attributes or configuration.</Description>
+    <PackageTags>mediator;caching;pipeline;distributed-cache;dotnet;csharp;clean-architecture</PackageTags>
+    <PackageReleaseNotes>Release notes: https://github.com/boutquin/Boutquin.Mediator/blob/main/CHANGELOG.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Boutquin.Abstractions.csproj" />
+    <ProjectReference Include="..\Mediator.Abstractions\Boutquin.Mediator.Abstractions.csproj" />
+  </ItemGroup>
+
+  <!-- Grants the unit tests access to internal members (the Result JSON converter internals). -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Boutquin.Tests.UnitTests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+#nullable enable
+Boutquin.Mediator.Extensions.ServiceCollectionExtensions
+Boutquin.Mediator.Helpers.Mediator
+Boutquin.Mediator.Helpers.Mediator.CreateStream<TRequest, TResponse>(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<Boutquin.Domain.Abstractions.Result<TResponse>!>!
+Boutquin.Mediator.Helpers.Mediator.Mediator(System.IServiceProvider! serviceProvider) -> void
+Boutquin.Mediator.Helpers.Mediator.PublishAsync<TNotification>(TNotification notification, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result!>
+Boutquin.Mediator.Helpers.Mediator.SendAsync<TRequest, TResponse>(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+Boutquin.Mediator.Pipeline.LoggingPreProcessor<TRequest>
+Boutquin.Mediator.Pipeline.LoggingPreProcessor<TRequest>.LoggingPreProcessor(Microsoft.Extensions.Logging.ILogger<TRequest>! logger) -> void
+Boutquin.Mediator.Pipeline.LoggingPreProcessor<TRequest>.ProcessAsync(TRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Boutquin.Domain.Abstractions.Result!>
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddBehaviors(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddMediator(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddNotificationHandlers(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddPostProcessors(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddPreProcessors(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddRequestHandlers(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Boutquin.Mediator.Extensions.ServiceCollectionExtensions.AddStreamHandlers(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]? assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!

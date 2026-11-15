@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Boutquin.Mediator.Authorization</Title>
+    <Description>Authorization pipeline behavior for Boutquin.Mediator — enforces [Authorize] policies on requests and fails closed with an unauthorized Result.</Description>
+    <PackageTags>mediator;authorization;pipeline;security;dotnet;csharp;clean-architecture</PackageTags>
+    <PackageReleaseNotes>Release notes: https://github.com/boutquin/Boutquin.Mediator/blob/main/CHANGELOG.md</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Boutquin.Abstractions.csproj" />
+    <ProjectReference Include="..\Mediator.Abstractions\Boutquin.Mediator.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

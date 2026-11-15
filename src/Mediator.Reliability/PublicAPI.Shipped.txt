@@ -1,0 +1,18 @@
+#nullable enable
+Boutquin.Mediator.Reliability.RetryBehavior<TRequest, TResponse>
+Boutquin.Mediator.Reliability.RetryBehavior<TRequest, TResponse>.HandleAsync(TRequest request, System.Func<System.Threading.Tasks.ValueTask<TResponse!>>! next, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResponse!>
+Boutquin.Mediator.Reliability.RetryBehavior<TRequest, TResponse>.RetryBehavior(Boutquin.Reliability.IWaitWithRetry! waitWithRetry, Microsoft.Extensions.Configuration.IConfiguration! configuration, Microsoft.Extensions.Logging.ILogger<TRequest>! logger) -> void
+Boutquin.Mediator.Reliability.RetrySettings
+Boutquin.Mediator.Reliability.RetrySettings.ContinueAfterTimeout.get -> bool
+Boutquin.Mediator.Reliability.RetrySettings.ContinueAfterTimeout.set -> void
+Boutquin.Mediator.Reliability.RetrySettings.Enabled.get -> bool
+Boutquin.Mediator.Reliability.RetrySettings.Enabled.set -> void
+Boutquin.Mediator.Reliability.RetrySettings.NumberOfRetries.get -> int
+Boutquin.Mediator.Reliability.RetrySettings.NumberOfRetries.set -> void
+Boutquin.Mediator.Reliability.RetrySettings.RetrySettings() -> void
+Boutquin.Mediator.Reliability.RetrySettings.SleepDurations.get -> System.Collections.Generic.IReadOnlyList<int>!
+Boutquin.Mediator.Reliability.RetrySettings.SleepDurationsMs.get -> System.Collections.Generic.IReadOnlyList<int>?
+Boutquin.Mediator.Reliability.RetrySettings.SleepDurationsMs.set -> void
+Boutquin.Mediator.Reliability.RetrySettings.SleepTimeDurationProvider.get -> System.Func<int, System.TimeSpan>!
+Boutquin.Mediator.Reliability.RetrySettings.TimeoutPerAttempt.get -> System.TimeSpan
+Boutquin.Mediator.Reliability.RetrySettings.TimeoutPerAttempt.set -> void
