@@ -35,6 +35,25 @@ Every package targets both `net10.0` and `net11.0`. Both targets depend on the `
 - **Retry** — opt-in per request type from configuration: retry count, per-attempt timeout, back-off schedule.
 - **Scoped mediator** — `IMediator` is registered per scope, so handlers can depend on scoped services such as a `DbContext`.
 
+## Installation
+
+Install the mediator and the contracts your handlers implement:
+
+```bash
+dotnet add package Boutquin.Mediator --version 1.0.0
+dotnet add package Boutquin.Mediator.Abstractions --version 1.0.0
+```
+
+Add a behavior package for each pipeline concern you use:
+
+```bash
+dotnet add package Boutquin.Mediator.Authorization --version 1.0.0
+dotnet add package Boutquin.Mediator.Caching --version 1.0.0
+dotnet add package Boutquin.Mediator.Reliability --version 1.0.0
+```
+
+All Boutquin.Mediator packages depend on each other at the same exact version, so install them at one version.
+
 ## Quick Start
 
 ```csharp

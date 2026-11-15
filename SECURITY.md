@@ -2,12 +2,12 @@
 
 ## Supported Versions
 
-Version 1.0.x is the first release line and will be supported upon publication.
+Version 1.0.x is the first release line.
 
 | Version | Status |
 |---------|--------|
-| 1.0.x   | Supported upon publication |
-| < 1.0   | Never published; unsupported |
+| 1.0.x   | Supported |
+| < 1.0   | Not released; unsupported |
 
 ## Reporting a Vulnerability
 

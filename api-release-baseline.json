@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "packages": {
+    "Boutquin.Abstractions": "ea571c8ea9c447a4d9d249df4259c703e877eeb27c93a1070385e26b4ee298df",
+    "Boutquin.Mediator": "6252e4b9edb005a2fb3ec930a03826e233953a9ca7b13b32ff6ed1558d8ae5fc",
+    "Boutquin.Mediator.Abstractions": "09cf24e0aafa0c25fa87b21f9fd9a14c089bdfe6a034de1f1dbe170a041d45c9",
+    "Boutquin.Mediator.Authorization": "6aec63513c7964f891913fd1be4988a5d5bdacf1d8d7e6d6ebc6b9622e64d4a2",
+    "Boutquin.Mediator.Caching": "516476fbc9690476d116d1524dbb0741d49344210f8544a00062dfa0c6fc30dd",
+    "Boutquin.Mediator.Reliability": "f95ded2444327bf3f4c29dcae7666b2e483d716116aa6435863109128066f37e",
+    "Boutquin.Reliability": "6dda2ff5b6cdaf17cb9ba87ca964f1529f6e83ba9655746c96cf71195f717e23"
+  }
+}

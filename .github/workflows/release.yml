@@ -1,0 +1,129 @@
+name: Qualify release
+
+# Stage 1 of 2. A v* tag builds, tests and packs the release, verifies the packages and the
+# release documentation, and freezes the exact archives plus package-hashes.json as GitHub
+# Release assets. Nothing is pushed to nuget.org here: publish.yml (stage 2) pushes those frozen
+# bytes after the operator pins the manifest SHA-256 printed in this run's summary.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    name: Qualify ${{ github.ref_name }}
+    if: github.repository == 'boutquin/Boutquin.Mediator'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the GitHub Release that holds the frozen archives
+    env:
+      PACKAGE_OUTPUT: ${{ github.workspace }}/artifacts/packages
+
+    steps:
+      - name: Validate release tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: '[[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-rc\.[0-9]+(\.[0-9]+)*)?$ ]]'
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # Full history needed for MinVer
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            10.0.x
+            11.0.x
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+
+      - name: Release-gate script tests
+        run: |
+          python3 -m unittest discover -s scripts/tests -p 'test_*.py'
+          python3 scripts/check-package-docs.py --self-test
+
+      - name: Verify release documentation and API boundary
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if [[ "$RELEASE_TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            python3 scripts/check-release-docs.py "${BASH_REMATCH[1]}"
+            python3 scripts/check-api-release-baseline.py --release
+          else
+            python3 scripts/check-api-release-baseline.py
+          fi
+
+      - name: dotnet restore (locked)
+        run: dotnet restore Boutquin.Mediator.slnx --locked-mode
+
+      - name: Build
+        run: dotnet build Boutquin.Mediator.slnx --configuration Release --no-restore --no-incremental -p:GeneratePackageOnBuild=false
+
+      - name: Test
+        run: dotnet test Boutquin.Mediator.slnx --configuration Release --no-build --no-restore
+
+      - name: Format
+        run: dotnet format Boutquin.Mediator.slnx -v detailed --verify-no-changes --no-restore
+
+      - name: Pack, hash, and verify release archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          package_version="${GITHUB_REF_NAME#v}"
+          commit="$(git rev-parse HEAD)"
+          mkdir -p "$PACKAGE_OUTPUT"
+          test -z "$(find "$PACKAGE_OUTPUT" -mindepth 1 -print -quit)"
+          for project in Abstractions Reliability Mediator.Abstractions Mediator Mediator.Authorization Mediator.Caching Mediator.Reliability; do
+            dotnet pack src/$project/*.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
+          done
+          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- verify --spec eng/package-verification.json --artifacts "$PACKAGE_OUTPUT" --version "$package_version" --commit "$commit"
+          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- record-hashes --spec eng/package-verification.json --artifacts "$PACKAGE_OUTPUT" --version "$package_version" --commit "$commit" --output "$PACKAGE_OUTPUT/package-hashes.json"
+          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- verify --spec eng/package-verification.json --artifacts "$PACKAGE_OUTPUT" --version "$package_version" --commit "$commit" --hashes "$PACKAGE_OUTPUT/package-hashes.json"
+          python3 scripts/check-package-docs.py "$PACKAGE_OUTPUT"
+
+      - name: Preserve verified release archives
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: nuget-release-${{ github.ref_name }}
+          path: artifacts/packages/
+          if-no-files-found: error
+
+      - name: Freeze archives as GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          prerelease=()
+          [[ "$RELEASE_TAG" == *-rc.* ]] && prerelease=(--prerelease)
+          gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --verify-tag "${prerelease[@]}" \
+            --title "$RELEASE_TAG" \
+            --notes "See [CHANGELOG.md](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/CHANGELOG.md). Packages are published to nuget.org from these exact archives by the Publish qualified release workflow." \
+            "$PACKAGE_OUTPUT"/*.nupkg "$PACKAGE_OUTPUT"/*.snupkg "$PACKAGE_OUTPUT/package-hashes.json"
+
+      - name: Report manifest digest for publication
+        shell: bash
+        run: |
+          digest="$(sha256sum "$PACKAGE_OUTPUT/package-hashes.json" | cut -d' ' -f1)"
+          {
+            echo "### Ready to publish $GITHUB_REF_NAME"
+            echo
+            echo "Run **Publish qualified release** from \`main\` with:"
+            echo
+            echo "- \`release_tag\`: \`$GITHUB_REF_NAME\`"
+            echo "- \`manifest_sha256\`: \`$digest\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "manifest_sha256=$digest"

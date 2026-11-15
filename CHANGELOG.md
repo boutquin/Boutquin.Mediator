@@ -7,11 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - prepared 2026-11-14 (not yet published)
+## [1.0.0] — 2026-11-14
 
-> Release notes prepared on 2026-11-14. Version 1.0.0 has not yet been tagged or published.
-> This is the first public release of all seven packages. It establishes the stable public API
-> baseline; earlier `0.0.0-beta` builds were never published to nuget.org.
+> The first public release of all seven packages. It establishes the stable public API baseline;
+> no earlier version was released to nuget.org.
 
 ### Added
 

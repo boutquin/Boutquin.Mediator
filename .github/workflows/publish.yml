@@ -1,20 +1,52 @@
-name: Publish to NuGet
+name: Publish qualified release
+
+# Stage 2 of 2. Pushes the archives that release.yml froze as GitHub Release assets, after
+# proving they are byte-identical to the operator-pinned manifest and to the tagged source.
+# Nothing is rebuilt. The `release` environment requires a reviewer's approval, and nuget.org
+# trusted publishing exchanges this job's OIDC token for a one-hour API key, so no long-lived
+# key is stored. Same shape as Boutquin.MarketData's publish workflow.
 
 on:
-  push:
-    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing qualified exact stable or numeric RC tag
+        required: true
+        type: string
+      manifest_sha256:
+        description: SHA-256 of package-hashes.json, from the Qualify release run summary
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ inputs.release_tag }}
+  cancel-in-progress: false
 
 jobs:
   publish:
-    name: Publish NuGet packages
+    if: github.repository == 'boutquin/Boutquin.Mediator' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    env:
-      PACKAGE_OUTPUT: ${{ github.workspace }}/artifacts/packages
-
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v7.0.1
+      - name: Validate release inputs
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          MANIFEST_SHA256: ${{ inputs.manifest_sha256 }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-rc\.[0-9]+(\.[0-9]+)*)?$ ]]
+          [[ "$MANIFEST_SHA256" =~ ^[0-9a-f]{64}$ ]]
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0 # Full history needed for MinVer
+          ref: ${{ inputs.release_tag }}
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up .NET
         uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
@@ -24,55 +56,52 @@ jobs:
             10.0.x
             11.0.x
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v6.1.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props', '**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+          python-version: '3.13'
 
-      - name: dotnet restore
-        run: dotnet restore Boutquin.Mediator.slnx
+      - name: Download frozen release archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --dir release-assets --pattern '*.nupkg' --pattern '*.snupkg' --pattern 'package-hashes.json'
 
-      - name: Build
-        run: dotnet build Boutquin.Mediator.slnx --configuration Release --no-restore -p:GeneratePackageOnBuild=false
+      - name: Verify release documentation for stable tags
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          if [[ "$RELEASE_TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            python3 scripts/check-release-docs.py "${BASH_REMATCH[1]}"
+            python3 scripts/check-api-release-baseline.py --release
+          fi
 
-      - name: Test
-        run: dotnet test Boutquin.Mediator.slnx --configuration Release --no-build --no-restore
+      - name: Verify exact frozen archives against the pinned manifest
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          MANIFEST_SHA256: ${{ inputs.manifest_sha256 }}
+        run: python3 scripts/verify-release-assets.py release-assets "$RELEASE_TAG" "$MANIFEST_SHA256"
 
-      - name: Format
-        run: dotnet format Boutquin.Mediator.slnx -v detailed --verify-no-changes --no-restore
-
-      - name: Pack, hash, and verify release artifacts
+      - name: Verify package contents against the tagged source
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
         shell: bash
         run: |
           set -euo pipefail
-          package_version="${GITHUB_REF_NAME#v}"
+          dotnet build tools/Boutquin.PackageVerification --configuration Release
           commit="$(git rev-parse HEAD)"
-          mkdir -p "$PACKAGE_OUTPUT"
-          test -z "$(find "$PACKAGE_OUTPUT" -mindepth 1 -print -quit)"
-          dotnet pack src/Abstractions/Boutquin.Abstractions.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet pack src/Reliability/Boutquin.Reliability.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet pack src/Mediator.Abstractions/Boutquin.Mediator.Abstractions.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet pack src/Mediator/Boutquin.Mediator.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet pack src/Mediator.Authorization/Boutquin.Mediator.Authorization.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet pack src/Mediator.Caching/Boutquin.Mediator.Caching.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet pack src/Mediator.Reliability/Boutquin.Mediator.Reliability.csproj --configuration Release --no-build --no-restore --output "$PACKAGE_OUTPUT"
-          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- verify --spec eng/package-verification.json --artifacts "$PACKAGE_OUTPUT" --version "$package_version" --commit "$commit"
-          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- record-hashes --spec eng/package-verification.json --artifacts "$PACKAGE_OUTPUT" --version "$package_version" --commit "$commit" --output "$PACKAGE_OUTPUT/package-hashes.json"
-          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- verify --spec eng/package-verification.json --artifacts "$PACKAGE_OUTPUT" --version "$package_version" --commit "$commit" --hashes "$PACKAGE_OUTPUT/package-hashes.json"
+          dotnet run --project tools/Boutquin.PackageVerification --configuration Release --no-build -- verify --spec eng/package-verification.json --artifacts release-assets --version "${RELEASE_TAG#v}" --commit "$commit" --hashes release-assets/package-hashes.json
+          python3 scripts/check-package-docs.py release-assets
 
-      - name: Preserve verified release artifacts and hashes
-        uses: actions/upload-artifact@v7.0.2
+      - name: NuGet login (OIDC to short-lived API key)
+        id: nuget-login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
         with:
-          name: nuget-release-${{ github.ref_name }}
-          path: artifacts/packages/
-          if-no-files-found: error
+          user: ${{ secrets.NUGET_USER }}
 
-      - name: Push packages to NuGet
-        run: dotnet nuget push "$PACKAGE_OUTPUT/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - name: Push symbols to NuGet
-        continue-on-error: true
-        run: dotnet nuget push "$PACKAGE_OUTPUT/*.snupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publish verified packages and symbols
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+        run: |
+          test -n "$NUGET_API_KEY"
+          dotnet nuget push "release-assets/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push "release-assets/*.snupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate

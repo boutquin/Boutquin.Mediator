@@ -5,6 +5,8 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);NU5104</NoWarn>
+    <!-- Committed lock files; CI restores with locked mode so a release build cannot drift. -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <LangVersion>14.0</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
